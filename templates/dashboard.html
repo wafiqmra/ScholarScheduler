@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Dashboard {% if is_premium %}<span class="premium-badge">Premium</span>{% else %}(Free){% endif %}</h2>
+
+{% if not is_premium %}
+<p style="color:red;">You are Free user. Upgrade untuk fitur penuh.</p>
+<a href="{{ url_for('upgrade') }}">Upgrade Now</a>
+{% endif %}
+
+<h3>Add Task</h3>
+{% if not is_premium and tasks|length >=5 %}
+<p style="color:red;">Free user maksimal 5 task. Upgrade untuk menambah lebih banyak task.</p>
+{% else %}
+<form id="task-form">
+    <input type="text" name="title" placeholder="Task title" required>
+    <input type="date" name="deadline" required>
+    <input type="number" name="sks" placeholder="SKS" required>
+    <select name="jenis">
+        <option value="kuis">Kuis</option>
+        <option value="uts">UTS</option>
+        <option value="uas">UAS</option>
+        <option value="proyek">Proyek</option>
+    </select>
+    <input type="number" name="estimasi" placeholder="Estimasi waktu (jam)" required>
+    <button type="submit">Add Task</button>
+</form>
+{% endif %}
+
+<h3>Your Tasks:</h3>
+<table>
+<tr><th>Title</th><th>Deadline</th><th>SKS</th><th>Jenis</th><th>Est. Time</th><th>Priority</th><th>Action</th></tr>
+{% for task in tasks %}
+<tr data-task-id="{{ task['id'] }}">
+    <td>{{ task['title'] }}</td>
+    <td>{{ task['deadline'] }}</td>
+    <td>{{ task['sks'] }}</td>
+    <td>{{ task['jenis'] }}</td>
+    <td>{{ task['estimasi_waktu'] }}</td>
+    <td>{{ task['priority'] }}</td>
+    <td>
+        {% if is_premium %}
+        <button class="delete-task">🗑️</button>
+        <button class="edit-task">✏️</button>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

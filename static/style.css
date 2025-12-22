@@ -1,0 +1,45 @@
+body { font-family: Arial; margin:0; padding:0; background:#f8f8f8; }
+nav { background:#333; color:white; padding:10px; }
+nav a { color:white; margin:0 10px; text-decoration:none; }
+.container { padding:20px; }
+
+.flash { padding:10px; margin:10px 0; border-radius:5px; }
+.flash.success { background:#d4edda; color:#155724; }
+.flash.danger { background:#f8d7da; color:#721c24; }
+
+/* Auth Form */
+.auth-container { max-width:400px; margin:50px auto; padding:30px; background:#fff; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+.auth-container h2 { text-align:center; margin-bottom:20px; }
+.auth-container input, .auth-container select { width:100%; padding:12px; margin:8px 0; border-radius:5px; border:1px solid #ccc; }
+.auth-container button { width:100%; padding:12px; background:#4CAF50; color:#fff; border:none; border-radius:5px; cursor:pointer; font-size:16px;}
+.auth-container button:hover { background:#45a049; }
+.auth-container p { text-align:center; margin-top:15px;}
+.auth-container a { color:#4CAF50; text-decoration:none;}
+.auth-container a:hover { text-decoration:underline;}
+
+.password-field { position: relative; }
+.password-field .toggle-password { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor:pointer; }
+
+table { width:100%; border-collapse: collapse; margin-top:20px;}
+table, th, td { border:1px solid #ccc; }
+th, td { padding:10px; text-align:left; }
+.premium-badge {
+    background: gold;
+    color: black;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.upgrade-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+.upgrade-table th, .upgrade-table td {
+    border:1px solid #ccc;
+    padding:10px;
+    text-align:center;
+}
+.upgrade-table th { background:#4CAF50; color:white; }
+.upgrade-table tr:nth-child(even) { background:#f2f2f2; }
