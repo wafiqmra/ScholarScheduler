@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 setTimeout(() => {
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
-                    submitBtn.style.background = "linear-gradient(135deg, #3b82f6, #4f46e5)";
+                    submitBtn.style.background = "linear-gradient(135deg, #3b82f6, #14b8a6)";
                 }, 2000);
             });
         });
@@ -125,6 +125,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 align-items: center;
                 justify-content: center;
                 z-index: 1000;
+                backdrop-filter: blur(4px);
+                animation: fadeIn 0.2s ease;
             `;
             
             // Create modal content
@@ -135,14 +137,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 border-radius: 12px;
                 min-width: 400px;
                 box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+                animation: slideUp 0.3s ease;
             `;
             
             modalContent.innerHTML = `
-                <h3 style="margin-top: 0;">Edit Task</h3>
-                <input type="text" id="edit-task-input" value="${currentTitle}" style="width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: 1px solid var(--notion-border); border-radius: 8px;">
+                <h3 style="margin-top: 0; color: var(--notion-text);">Edit Task</h3>
+                <input type="text" id="edit-task-input" value="${currentTitle}" style="width: 100%; padding: 0.8rem; margin-bottom: 1.5rem; border: 1px solid var(--notion-border); border-radius: 8px; font-family: 'Poppins', sans-serif;">
                 <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                    <button id="cancel-edit" style="padding: 0.8rem 1.5rem; background: var(--notion-border); border: none; border-radius: 8px; cursor: pointer;">Cancel</button>
-                    <button id="save-edit" style="padding: 0.8rem 1.5rem; background: linear-gradient(135deg, var(--notion-primary), #4f46e5); color: white; border: none; border-radius: 8px; cursor: pointer;">Save Changes</button>
+                    <button id="cancel-edit" style="padding: 0.8rem 1.5rem; background: var(--notion-border); border: none; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif;">Cancel</button>
+                    <button id="save-edit" style="padding: 0.8rem 1.5rem; background: linear-gradient(135deg, #3b82f6, #14b8a6); color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'Poppins', sans-serif;">Save Changes</button>
                 </div>
             `;
             
@@ -154,7 +157,8 @@ document.addEventListener("DOMContentLoaded", () => {
             
             // Event listeners for modal buttons
             document.getElementById("cancel-edit").addEventListener("click", () => {
-                document.body.removeChild(modal);
+                modal.style.opacity = "0";
+                setTimeout(() => document.body.removeChild(modal), 200);
             });
             
             document.getElementById("save-edit").addEventListener("click", () => {
@@ -177,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(resp => resp.text())
                 .then(() => {
                     saveBtn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                    saveBtn.style.background = "linear-gradient(135deg, #10b981, #059669)";
                     setTimeout(() => {
                         location.reload();
                     }, 500);
@@ -185,6 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.error('Error:', error);
                     saveBtn.innerHTML = originalText;
                     saveBtn.disabled = false;
+                    saveBtn.style.background = "linear-gradient(135deg, #3b82f6, #14b8a6)";
                     alert("Failed to save changes. Please try again.");
                 });
             });
@@ -192,15 +198,19 @@ document.addEventListener("DOMContentLoaded", () => {
             // Close modal on ESC key
             document.addEventListener("keydown", function escHandler(e) {
                 if (e.key === "Escape") {
-                    document.body.removeChild(modal);
-                    document.removeEventListener("keydown", escHandler);
+                    modal.style.opacity = "0";
+                    setTimeout(() => {
+                        document.body.removeChild(modal);
+                        document.removeEventListener("keydown", escHandler);
+                    }, 200);
                 }
             });
             
             // Close modal on background click
             modal.addEventListener("click", (e) => {
                 if (e.target === modal) {
-                    document.body.removeChild(modal);
+                    modal.style.opacity = "0";
+                    setTimeout(() => document.body.removeChild(modal), 200);
                 }
             });
         });
@@ -221,11 +231,35 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
     
+    // Course selection handling
+    const courseSelect = document.getElementById('course-select');
+    const newCourseFields = document.getElementById('new-course-fields');
+    
+    if (courseSelect && newCourseFields) {
+        courseSelect.addEventListener('change', function() {
+            if (this.value === 'new') {
+                newCourseFields.style.display = 'grid';
+                // Clear existing course selection
+                document.querySelector('select[name="course_id"]').required = false;
+                document.querySelector('input[name="new_course"]').required = true;
+            } else {
+                newCourseFields.style.display = 'none';
+                document.querySelector('select[name="course_id"]').required = true;
+                document.querySelector('input[name="new_course"]').required = false;
+            }
+        });
+    }
+    
     // Add CSS for animations
     const style = document.createElement('style');
     style.textContent = `
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
     `;

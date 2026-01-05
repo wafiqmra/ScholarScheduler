@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2><i class="fas fa-book"></i> Manage Courses</h2>
+        <a href="{{ url_for('dashboard') }}" style="padding: 0.5rem 1rem; background: var(--notion-border); color: var(--notion-text); text-decoration: none; border-radius: 6px; font-weight: 500;">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Add New Course Form -->
+    <div class="course-box" style="margin-bottom: 2rem;">
+        <h3><i class="fas fa-plus-circle"></i> Add New Course</h3>
+        <form method="POST" action="{{ url_for('add_course') }}" style="display: grid; grid-template-columns: 1fr 100px 80px auto; gap: 1rem; align-items: end;">
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--notion-text-light);">Course Name</label>
+                <input type="text" name="course_name" placeholder="e.g., Calculus, Physics, Programming" required style="width: 100%;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--notion-text-light);">Color</label>
+                <input type="color" name="color" value="#3b82f6" style="width: 100%;">
+            </div>
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--notion-text-light);">SKS</label>
+                <input type="number" name="sks" min="1" max="6" value="2" required style="width: 100%;">
+            </div>
+            <div>
+                <button type="submit" style="padding: 0.8rem 1.5rem; background: linear-gradient(135deg, var(--notion-primary), var(--notion-teal)); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+                    <i class="fas fa-plus"></i> Add Course
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Course List -->
+    <h3><i class="fas fa-list"></i> Your Courses ({{ courses|length }})</h3>
+    
+    {% if courses %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
+        {% for course in courses %}
+        <div class="course-card" style="background: var(--notion-card); border: 1px solid var(--notion-border); border-radius: 12px; padding: 1.5rem; position: relative;">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                <div style="width: 40px; height: 40px; background: {{ course.color }}; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                    {{ course.course_name[0]|upper }}
+                </div>
+                <div>
+                    <h4 style="margin: 0; color: var(--notion-text);">{{ course.course_name }}</h4>
+                    <div style="color: var(--notion-text-light); font-size: 0.9rem;">
+                        {{ course.sks }} SKS • {{ course.task_count }} tasks
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                <button class="edit-course" data-id="{{ course.id }}" style="flex: 1; padding: 0.5rem; background: var(--notion-primary-light); color: var(--notion-primary); border: none; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-edit"></i> Edit
+                </button>
+                <button class="delete-course" data-id="{{ course.id }}" data-name="{{ course.course_name }}" style="flex: 1; padding: 0.5rem; background: var(--notion-red-light); color: var(--notion-red); border: none; border-radius: 6px; cursor: pointer;">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 3rem; background: var(--notion-card); border-radius: 12px; border: 2px dashed var(--notion-border);">
+        <i class="fas fa-book" style="font-size: 3rem; color: var(--notion-border); margin-bottom: 1rem;"></i>
+        <h3 style="color: var(--notion-text-light);">No courses yet</h3>
+        <p style="color: var(--notion-text-light);">Add your first course using the form above!</p>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Delete course with confirmation
+document.querySelectorAll('.delete-course').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const courseId = this.dataset.id;
+        const courseName = this.dataset.name;
+        
+        if (!confirm(`Are you sure you want to delete "${courseName}"? Tasks will become uncategorized.`)) {
+            return;
+        }
+        
+        fetch(`/delete_course/${courseId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Failed to delete course');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to delete course');
+        });
+    });
+});
+
+// Edit course functionality (you can extend this)
+document.querySelectorAll('.edit-course').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const courseId = this.dataset.id;
+        const courseCard = this.closest('.course-card');
+        const courseName = courseCard.querySelector('h4').textContent;
+        
+        const newName = prompt('Edit course name:', courseName);
+        if (newName && newName !== courseName) {
+            alert('Edit functionality coming soon!');
+        }
+    });
+});
+</script>
+
+<style>
+.course-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.course-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+input[type="color"] {
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--notion-border);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+</style>
+{% endblock %}

@@ -1,10 +1,10 @@
-/* Notion-inspired Calming Style */
+/* Scholar Scheduler - Calming Color Palette */
 :root {
-    --notion-bg: #f7f6f3;
+    --notion-bg: #f9fafb;
     --notion-card: #ffffff;
-    --notion-text: #37352f;
-    --notion-text-light: #6b6a65;
-    --notion-border: #e6e5e2;
+    --notion-text: #1f2937;
+    --notion-text-light: #6b7280;
+    --notion-border: #e5e7eb;
     --notion-primary: #3b82f6;
     --notion-primary-light: #eff6ff;
     --notion-green: #10b981;
@@ -13,9 +13,11 @@
     --notion-orange-light: #fef3c7;
     --notion-red: #ef4444;
     --notion-red-light: #fee2e2;
-    --notion-purple: #8b5cf6;
-    --notion-purple-light: #ede9fe;
+    --notion-blue: #0ea5e9;
+    --notion-blue-light: #e0f2fe;
     --notion-gray: #9ca3af;
+    --notion-teal: #14b8a6;
+    --notion-teal-light: #ccfbf1;
 }
 
 * {
@@ -25,7 +27,7 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: var(--notion-bg);
     color: var(--notion-text);
     line-height: 1.6;
@@ -53,6 +55,7 @@ nav a {
     padding: 0.5rem 1rem;
     border-radius: 6px;
     transition: all 0.2s ease;
+    font-family: 'Poppins', sans-serif;
 }
 
 nav a:hover {
@@ -76,11 +79,12 @@ h1, h2, h3, h4 {
     font-weight: 600;
     color: var(--notion-text);
     margin-bottom: 1rem;
+    font-family: 'Poppins', sans-serif;
 }
 
 h1 {
     font-size: 2.5rem;
-    background: linear-gradient(135deg, var(--notion-primary), var(--notion-purple));
+    background: linear-gradient(135deg, var(--notion-primary), var(--notion-teal));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 1.5rem;
@@ -102,6 +106,7 @@ h3 {
 p {
     color: var(--notion-text-light);
     margin-bottom: 1rem;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Flash Messages */
@@ -111,6 +116,7 @@ p {
     border-radius: 8px;
     border: 1px solid transparent;
     animation: slideIn 0.3s ease;
+    font-family: 'Poppins', sans-serif;
 }
 
 @keyframes slideIn {
@@ -147,6 +153,7 @@ p {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    font-family: 'Poppins', sans-serif;
 }
 
 .premium-badge::before {
@@ -168,6 +175,7 @@ p {
     text-align: center;
     color: var(--notion-text);
     margin-bottom: 2rem;
+    font-family: 'Poppins', sans-serif;
 }
 
 .auth-container input,
@@ -180,6 +188,7 @@ p {
     font-size: 1rem;
     background: var(--notion-bg);
     transition: all 0.2s ease;
+    font-family: 'Poppins', sans-serif;
 }
 
 .auth-container input:focus,
@@ -192,7 +201,7 @@ p {
 .auth-container button {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, var(--notion-primary), #4f46e5);
+    background: linear-gradient(135deg, var(--notion-primary), var(--notion-teal));
     color: white;
     border: none;
     border-radius: 8px;
@@ -200,6 +209,7 @@ p {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-family: 'Poppins', sans-serif;
 }
 
 .auth-container button:hover {
@@ -225,6 +235,7 @@ p {
     color: var(--notion-text-light);
     cursor: pointer;
     padding: 0.5rem;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Dashboard Styles */
@@ -239,17 +250,17 @@ p {
 
 .stress-box.green {
     border-color: var(--notion-green);
-    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
 }
 
 .stress-box.orange {
     border-color: var(--notion-orange);
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
 }
 
 .stress-box.red {
     border-color: var(--notion-red);
-    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
 }
 
 .stress-level {
@@ -257,6 +268,7 @@ p {
     font-weight: 700;
     margin: 1rem 0;
     text-align: center;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Task Form */
@@ -279,10 +291,11 @@ p {
     border-radius: 8px;
     font-size: 1rem;
     background: var(--notion-bg);
+    font-family: 'Poppins', sans-serif;
 }
 
 #task-form button {
-    background: linear-gradient(135deg, var(--notion-primary), #4f46e5);
+    background: linear-gradient(135deg, var(--notion-primary), var(--notion-teal));
     color: white;
     border: none;
     font-weight: 600;
@@ -317,6 +330,7 @@ p {
     gap: 0.5rem;
     color: var(--notion-primary);
     margin-bottom: 1.5rem;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Tables */
@@ -333,12 +347,14 @@ th {
     text-align: left;
     font-weight: 600;
     border-bottom: 2px solid var(--notion-border);
+    font-family: 'Poppins', sans-serif;
 }
 
 td {
     padding: 1rem;
     border-bottom: 1px solid var(--notion-border);
     background: var(--notion-card);
+    font-family: 'Poppins', sans-serif;
 }
 
 tr:hover td {
@@ -355,6 +371,7 @@ tr:hover td {
     border-radius: 6px;
     transition: all 0.2s ease;
     font-size: 1.2rem;
+    font-family: 'Poppins', sans-serif;
 }
 
 .delete-task:hover {
@@ -367,82 +384,9 @@ tr:hover td {
     color: var(--notion-primary);
 }
 
-/* Weekly Planner */
-.week-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1rem;
-    margin: 2rem 0;
-}
-
-.day-box {
-    background: var(--notion-card);
-    border: 1px solid var(--notion-border);
-    border-radius: 12px;
-    padding: 1.5rem;
-    min-height: 200px;
-    transition: all 0.3s ease;
-}
-
-.day-box:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-}
-
-.day-box h4 {
-    color: var(--notion-text-light);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--notion-border);
-}
-
-/* Upgrade Page */
-.upgrade-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--notion-border);
-}
-
-.upgrade-table th {
-    background: linear-gradient(135deg, var(--notion-primary), #4f46e5);
-    color: white;
-    padding: 1.5rem;
-    text-align: center;
-}
-
-.upgrade-table td {
-    padding: 1.5rem;
-    text-align: center;
-    border-bottom: 1px solid var(--notion-border);
-}
-
-.upgrade-table tr:last-child td {
-    border-bottom: none;
-}
-
-.upgrade-table tr:nth-child(even) {
-    background: var(--notion-primary-light);
-}
-
-/* Buttons */
-button {
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-button:active {
-    transform: scale(0.98);
-}
-
 /* Collision Warning */
 .collision-warning {
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
     border: 1px solid var(--notion-orange);
     color: #92400e;
     padding: 1rem 1.5rem;
@@ -452,6 +396,7 @@ button:active {
     align-items: center;
     gap: 0.5rem;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
 }
 
 .collision-warning::before {
@@ -480,6 +425,7 @@ button:active {
     font-weight: 700;
     color: var(--notion-primary);
     margin: 0.5rem 0;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Loading Animation */
@@ -520,5 +466,13 @@ button:active {
     
     #task-form {
         grid-template-columns: 1fr;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
     }
 }

@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scholar Scheduler • Notion-style Planner</title>
+    <title>Scholar Scheduler • Calming Academic Planner</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <nav>
         <div style="display: flex; align-items: center; gap: 1rem;">
-            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">S</div>
-            <span style="font-weight: 600; color: var(--notion-text);">Scholar Scheduler</span>
+            <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #3b82f6, #14b8a6); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">S</div>
+            <span style="font-weight: 600; color: var(--notion-text); font-family: 'Poppins', sans-serif;">Scholar Scheduler</span>
         </div>
         <div style="display: flex; align-items: center; gap: 0.5rem; margin-left: auto;">
             <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Home</a>
             {% if session.get('user_id') %}
                 <a href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="{{ url_for('manage_courses') }}"><i class="fas fa-book"></i> Courses</a>
                 <a href="{{ url_for('weekly_planner') }}"><i class="fas fa-calendar-week"></i> Weekly</a>
                 {% if not session.get('is_premium') %}
                     <a href="{{ url_for('upgrade') }}" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f;">

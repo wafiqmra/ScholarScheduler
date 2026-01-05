@@ -1,29 +1,108 @@
-<h2>📅 Weekly Reality Planner</h2>
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='weekly-planner.css') }}">
 
-<p>Total Kapasitas: {{ weekly_capacity }} jam</p>
-<p>Total Beban Tugas: {{ total_task_hours }} jam</p>
+<div class="weekly-header">
+    <h2><i class="fas fa-calendar-week"></i> Weekly Planner</h2>
+    
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+        <div class="capacity-info">
+            <div class="capacity-item">
+                <div class="capacity-label">Daily Capacity</div>
+                <div class="capacity-value">{{ daily_hours }}h</div>
+            </div>
+            <div class="capacity-item">
+                <div class="capacity-label">Weekly Capacity</div>
+                <div class="capacity-value">{{ weekly_capacity }}h</div>
+            </div>
+            <div class="capacity-item">
+                <div class="capacity-label">Task Hours</div>
+                <div class="capacity-value">{{ total_task_hours }}h</div>
+            </div>
+            <div class="capacity-item">
+                <div class="capacity-label">Remaining</div>
+                <div class="capacity-value {% if remaining < 0 %}exceeded{% else %}remaining{% endif %}">
+                    {{ remaining }}h
+                </div>
+            </div>
+        </div>
+        
+        <form method="POST" action="{{ url_for('set_capacity') }}" style="display: flex; gap: 0.5rem; align-items: end;">
+            <div>
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--notion-text-light); font-size: 0.9rem;">Set Daily Hours</label>
+                <input type="number" name="daily_hours" min="1" max="12" value="{{ daily_hours }}" style="width: 80px; padding: 0.5rem; border: 1px solid var(--notion-border); border-radius: 6px;">
+            </div>
+            <button type="submit" style="padding: 0.5rem 1rem; background: var(--notion-primary); color: white; border: none; border-radius: 6px; cursor: pointer;">
+                Update
+            </button>
+        </form>
+    </div>
+</div>
 
-{% if remaining >= 0 %}
-<p class="green">🟢 Sisa waktu: {{ remaining }} jam</p>
-{% else %}
-<p class="red">🔴 Overload {{ remaining|abs }} jam</p>
+{% if remaining < 0 %}
+<div class="collision-warning" style="margin-bottom: 2rem;">
+    <i class="fas fa-exclamation-triangle"></i> Warning: You have exceeded your weekly capacity by {{ -remaining }} hours. Consider rescheduling some tasks.
+</div>
 {% endif %}
 
-<hr>
-
 <div class="week-grid">
-{% for day, tasks in planner.items() %}
-  <div class="day-box">
-    <h4>Hari {{ day + 1 }}</h4>
-    {% if tasks %}
-      <ul>
-        {% for t in tasks %}
-          <li>{{ t }}</li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>⏳ Kosong</p>
-    {% endif %}
-  </div>
-{% endfor %}
+    {% set days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+    {% for day in range(7) %}
+    <div class="day-box">
+        <h4>
+            {{ days[day] }}
+            <span style="font-size: 0.8rem; background: var(--notion-border); padding: 0.2rem 0.5rem; border-radius: 4px;">
+                {{ planner[day]|length }} tasks
+            </span>
+        </h4>
+        
+        {% if planner[day] %}
+        <ul class="day-tasks">
+            {% for task in planner[day] %}
+            <li class="day-task-item" style="border-left-color: {{ task.color }}; background: {{ task.color }}15;">
+                <i class="fas fa-circle" style="color: {{ task.color }}; margin-right: 0.5rem; font-size: 0.7rem;"></i>
+                <div>
+                    <strong>{{ task.title }}</strong>
+                    <div style="font-size: 0.8rem; color: var(--notion-text-light); margin-top: 0.2rem;">
+                        {{ task.course }}
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="empty-day">
+            <i class="fas fa-coffee" style="color: var(--notion-border);"></i>
+            <span style="color: var(--notion-text-light); font-size: 0.9rem;">No tasks scheduled</span>
+        </div>
+        {% endif %}
+        
+        <div class="day-stats">
+            {{ planner[day]|length }}/{{ daily_hours }}h
+        </div>
+    </div>
+    {% endfor %}
 </div>
+
+<div class="weekly-footer">
+    <h3><i class="fas fa-lightbulb"></i> Planning Tips</h3>
+    <div class="weekly-tips">
+        <div class="tip-card">
+            <i class="fas fa-clock"></i>
+            <strong>Time Blocking</strong>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Schedule specific time blocks for each task to stay focused.</p>
+        </div>
+        <div class="tip-card">
+            <i class="fas fa-running"></i>
+            <strong>Take Breaks</strong>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Include short breaks between study sessions to maintain productivity.</p>
+        </div>
+        <div class="tip-card">
+            <i class="fas fa-balance-scale"></i>
+            <strong>Balance Workload</strong>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Distribute difficult tasks across different days to avoid burnout.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

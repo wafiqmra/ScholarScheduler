@@ -1,0 +1,390 @@
+/* upgrade.css - Styles for Upgrade Page */
+
+/* Upgrade Page Specific Styles */
+.upgrade-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.upgrade-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.upgrade-header h1 {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #3b82f6, #14b8a6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.upgrade-subtitle {
+    color: var(--notion-text-light);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Pricing Grid */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.pricing-card {
+    background: var(--notion-card);
+    border-radius: 16px;
+    padding: 2.5rem;
+    border: 1px solid var(--notion-border);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.free-card {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+}
+
+.premium-card {
+    background: linear-gradient(135deg, #3b82f6, #14b8a6);
+    color: white;
+    border: none;
+}
+
+.recommended-badge {
+    position: absolute;
+    top: -12px;
+    right: 2rem;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #78350f;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pricing-card-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--notion-border);
+}
+
+.premium-card .pricing-card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pricing-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--notion-text);
+}
+
+.premium-card .pricing-title {
+    color: white;
+}
+
+.pricing-price {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--notion-text);
+    margin-bottom: 0.5rem;
+}
+
+.premium-card .pricing-price {
+    color: white;
+}
+
+.pricing-period {
+    color: var(--notion-text-light);
+    font-size: 0.9rem;
+}
+
+.premium-card .pricing-period {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Features List */
+.pricing-features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid var(--notion-border);
+    color: var(--notion-text);
+}
+
+.premium-card .feature-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.feature-item:last-child {
+    border-bottom: none;
+}
+
+.feature-check {
+    color: var(--notion-green);
+    min-width: 20px;
+}
+
+.premium-card .feature-check {
+    color: white;
+}
+
+.feature-cross {
+    color: var(--notion-red);
+    min-width: 20px;
+}
+
+.feature-disabled {
+    color: var(--notion-text-light) !important;
+    opacity: 0.7;
+}
+
+.premium-card .feature-disabled {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Current Plan Badge */
+.current-plan-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--notion-primary-light);
+    color: var(--notion-primary);
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Upgrade Form */
+.upgrade-form {
+    margin-top: 2rem;
+}
+
+.upgrade-button {
+    width: 100%;
+    padding: 1rem;
+    background: white;
+    color: #3b82f6;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.upgrade-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+}
+
+.upgrade-note {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+/* Comparison Table */
+.comparison-section {
+    margin: 4rem 0;
+}
+
+.comparison-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--notion-text);
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--notion-card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--notion-border);
+}
+
+.comparison-table th {
+    background: linear-gradient(135deg, #3b82f6, #14b8a6);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.comparison-table td {
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--notion-border);
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: none;
+}
+
+.comparison-table tr:nth-child(even) {
+    background: var(--notion-primary-light);
+}
+
+.text-success {
+    color: var(--notion-green) !important;
+}
+
+.text-danger {
+    color: var(--notion-red) !important;
+}
+
+/* FAQ Section */
+.faq-section {
+    margin: 4rem 0;
+}
+
+.faq-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--notion-text);
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.faq-item {
+    background: var(--notion-card);
+    border: 1px solid var(--notion-border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.faq-question {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--notion-text);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.faq-question i {
+    color: var(--notion-primary);
+}
+
+.faq-answer {
+    color: var(--notion-text-light);
+    line-height: 1.6;
+}
+
+/* Final CTA */
+.final-cta {
+    text-align: center;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    padding: 3rem;
+    border-radius: 16px;
+    margin-top: 4rem;
+    border: 1px solid var(--notion-border);
+}
+
+.final-cta h2 {
+    color: var(--notion-text);
+    margin-bottom: 1rem;
+}
+
+.final-cta p {
+    color: var(--notion-text-light);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+.cta-button {
+    padding: 1.2rem 3rem;
+    background: linear-gradient(135deg, #3b82f6, #14b8a6);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+}
+
+.cta-note {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--notion-text-light);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .upgrade-container {
+        padding: 1rem;
+    }
+    
+    .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .pricing-card {
+        padding: 1.5rem;
+    }
+    
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .final-cta {
+        padding: 2rem 1rem;
+    }
+    
+    .cta-button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .comparison-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

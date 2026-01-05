@@ -14,6 +14,9 @@
         <div style="font-size: 0.9rem; color: var(--notion-text-light);">
             <i class="fas fa-user"></i> {{ session['username'] }}
         </div>
+        <a href="{{ url_for('manage_courses') }}" style="padding: 0.5rem 1rem; background: var(--notion-primary-light); color: var(--notion-primary); text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 0.9rem;">
+            <i class="fas fa-book"></i> Manage Courses
+        </a>
         {% if not is_premium %}
         <a href="{{ url_for('upgrade') }}" style="padding: 0.5rem 1rem; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 0.9rem;">
             <i class="fas fa-crown"></i> Upgrade to Premium
@@ -41,6 +44,12 @@
         <div style="color: var(--notion-text-light); font-size: 0.9rem;">Across all courses</div>
     </div>
     
+    <div class="stat-card">
+        <div>Total Courses</div>
+        <div class="number">{{ courses|length }}</div>
+        <div style="color: var(--notion-text-light); font-size: 0.9rem;">Active courses</div>
+    </div>
+    
     <div class="stress-box {{ stress_color }}" style="grid-column: span 2;">
         <h3 style="margin-top: 0;">Weekly Stress Level</h3>
         <div class="stress-level">{{ stress_level }}</div>
@@ -55,10 +64,27 @@
     <i class="fas fa-lock"></i> Task limit reached. Upgrade to Premium for unlimited tasks.
 </p>
 {% else %}
-<form id="task-form">
+<form id="task-form" method="POST">
     <input type="text" name="title" placeholder="Task title (e.g., 'Math Assignment')" required>
+    
+    <select name="course_id" id="course-select" required>
+        <option value="">Select Course</option>
+        {% for course in courses %}
+        <option value="{{ course.id }}" data-color="{{ course.color }}">
+            {{ course.course_name }} ({{ course.sks }} SKS)
+        </option>
+        {% endfor %}
+        <option value="new">➕ Add New Course</option>
+    </select>
+    
+    <div id="new-course-fields" style="display: none; grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 100px 80px; gap: 1rem;">
+        <input type="text" name="new_course" placeholder="New course name (e.g., 'Calculus')">
+        <input type="color" name="course_color" value="#3b82f6" title="Course color">
+        <input type="number" name="course_sks" placeholder="SKS" min="1" max="6" value="2">
+    </div>
+    
     <input type="date" name="deadline" required>
-    <input type="number" name="sks" placeholder="SKS" min="1" max="6" required>
+    <input type="number" name="sks" placeholder="Task SKS" min="1" max="6" required>
     <select name="jenis">
         <option value="kuis">Kuis</option>
         <option value="uts">UTS</option>
@@ -75,81 +101,109 @@
 
 <h3><i class="fas fa-book-open"></i> Your Tasks by Course</h3>
 
-{% for course, tasks in grouped_tasks.items() %}
-<div class="course-box">
-    <h4>
-        {% if course.startswith('Math') %}📐
-        {% elif course.startswith('Physics') %}⚛️
-        {% elif course.startswith('Computer') %}💻
-        {% elif course.startswith('English') %}📖
-        {% else %}📘{% endif %}
-        {{ course }}
-    </h4>
+{% if grouped_tasks %}
+    {% for course_name, tasks in grouped_tasks.items() %}
+    <div class="course-box">
+        <h4>
+            {% set task = tasks[0] %}
+            {% if task.color %}
+            <span style="display: inline-block; width: 12px; height: 12px; background: {{ task.color }}; border-radius: 50%; margin-right: 8px;"></span>
+            {% endif %}
+            {{ course_name }}
+            <span style="font-size: 0.9rem; background: var(--notion-border); padding: 0.2rem 0.6rem; border-radius: 12px;">
+                {{ tasks|length }} tasks
+            </span>
+        </h4>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Deadline</th>
-                <th>Priority</th>
-                <th>Type</th>
-                <th>SKS</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for task in tasks %}
-            <tr data-task-id="{{ task.id }}">
-                <td style="font-weight: 500;">{{ task.title }}</td>
-                <td>
-                    {% if task.priority == '🔴 Mendesak' %}
-                    <span style="color: var(--notion-red); font-weight: 600;">{{ task.deadline }}</span>
-                    {% elif task.priority == '🟡 Sedang' %}
-                    <span style="color: var(--notion-orange);">{{ task.deadline }}</span>
-                    {% else %}
-                    <span style="color: var(--notion-green);">{{ task.deadline }}</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if task.priority == '🔴 Mendesak' %}
-                    <span style="background: var(--notion-red-light); color: var(--notion-red); padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.9rem;">
-                        {{ task.priority }}
-                    </span>
-                    {% elif task.priority == '🟡 Sedang' %}
-                    <span style="background: var(--notion-orange-light); color: #92400e; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.9rem;">
-                        {{ task.priority }}
-                    </span>
-                    {% else %}
-                    <span style="background: var(--notion-green-light); color: var(--notion-green); padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.9rem;">
-                        {{ task.priority }}
-                    </span>
-                    {% endif %}
-                </td>
-                <td>{{ task.jenis|title }}</td>
-                <td>{{ task.sks }}</td>
-                <td>
-                    {% if is_premium %}
-                    <button class="edit-task" title="Edit task">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="delete-task" title="Delete task">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                    {% else %}
-                    <span style="color: var(--notion-text-light); font-size: 0.9rem;">Premium only</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Deadline</th>
+                    <th>Priority</th>
+                    <th>Type</th>
+                    <th>SKS</th>
+                    <th>Hours</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr data-task-id="{{ task.id }}">
+                    <td style="font-weight: 500;">{{ task.title }}</td>
+                    <td>
+                        {% if task.priority == '🔴 Mendesak' %}
+                        <span style="color: var(--notion-red); font-weight: 600;">{{ task.deadline }}</span>
+                        {% elif task.priority == '🟡 Sedang' %}
+                        <span style="color: var(--notion-orange);">{{ task.deadline }}</span>
+                        {% else %}
+                        <span style="color: var(--notion-green);">{{ task.deadline }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if task.priority == '🔴 Mendesak' %}
+                        <span style="background: var(--notion-red-light); color: var(--notion-red); padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.9rem;">
+                            {{ task.priority }}
+                        </span>
+                        {% elif task.priority == '🟡 Sedang' %}
+                        <span style="background: var(--notion-orange-light); color: #92400e; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.9rem;">
+                            {{ task.priority }}
+                        </span>
+                        {% else %}
+                        <span style="background: var(--notion-green-light); color: var(--notion-green); padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.9rem;">
+                            {{ task.priority }}
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td>{{ task.jenis|title }}</td>
+                    <td>{{ task.sks }}</td>
+                    <td>{{ task.estimasi_waktu }}h</td>
+                    <td>
+                        {% if is_premium %}
+                        <button class="edit-task" title="Edit task">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-task" title="Delete task">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        {% else %}
+                        <span style="color: var(--notion-text-light); font-size: 0.9rem;">Premium only</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endfor %}
 {% else %}
 <div style="text-align: center; padding: 3rem; background: var(--notion-card); border-radius: 12px; border: 2px dashed var(--notion-border);">
     <i class="fas fa-clipboard-list" style="font-size: 3rem; color: var(--notion-border); margin-bottom: 1rem;"></i>
     <h3 style="color: var(--notion-text-light);">No tasks yet</h3>
     <p style="color: var(--notion-text-light);">Add your first task using the form above!</p>
 </div>
-{% endfor %}
+{% endif %}
+
+<script>
+// Show/hide new course fields
+document.addEventListener('DOMContentLoaded', function() {
+    const courseSelect = document.getElementById('course-select');
+    const newCourseFields = document.getElementById('new-course-fields');
+    
+    if (courseSelect && newCourseFields) {
+        courseSelect.addEventListener('change', function() {
+            if (this.value === 'new') {
+                newCourseFields.style.display = 'grid';
+                document.querySelector('select[name="course_id"]').required = false;
+                document.querySelector('input[name="new_course"]').required = true;
+            } else {
+                newCourseFields.style.display = 'none';
+                document.querySelector('select[name="course_id"]').required = true;
+                document.querySelector('input[name="new_course"]').required = false;
+            }
+        });
+    }
+});
+</script>
 
 {% endblock %}

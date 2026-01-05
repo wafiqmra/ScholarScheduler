@@ -1,21 +1,232 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Upgrade to Premium</h2>
-<table class="upgrade-table">
-<tr>
-    <th>Feature</th>
-    <th>Free</th>
-    <th>Premium</th>
-</tr>
-<tr><td>Max Tasks</td><td>5</td><td>Unlimited</td></tr>
-<tr><td>Auto Priority Engine</td><td>✅</td><td>✅</td></tr>
-<tr><td>Edit/Delete Task</td><td>❌</td><td>✅</td></tr>
-<tr><td>Premium Badge</td><td>❌</td><td>✅</td></tr>
-<tr><td>Support</td><td>Email</td><td>Priority Email + Chat</td></tr>
-</table>
+<link rel="stylesheet" href="{{ url_for('static', filename='upgrade.css') }}">
 
-<form method="POST">
-    <p>Harga Premium: Rp 50.000 (dummy payment)</p>
-    <button type="submit">Bayar & Upgrade</button>
-</form>
+<div class="upgrade-container">
+    <div class="upgrade-header">
+        <h1>Upgrade to Premium</h1>
+        <p class="upgrade-subtitle">Unlock advanced features to boost your productivity and reduce stress</p>
+    </div>
+    
+    <div class="pricing-grid">
+        <!-- Free Plan -->
+        <div class="pricing-card free-card">
+            <div class="pricing-card-header">
+                <h3 class="pricing-title">Free</h3>
+                <div class="pricing-price">$0</div>
+                <div class="pricing-period">Forever</div>
+            </div>
+            
+            <ul class="pricing-features">
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Up to 5 tasks</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Basic priority engine</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Weekly stress indicator</span>
+                </li>
+                <li class="feature-item feature-disabled">
+                    <i class="fas fa-times feature-cross"></i>
+                    <span>Advanced editing</span>
+                </li>
+                <li class="feature-item feature-disabled">
+                    <i class="fas fa-times feature-cross"></i>
+                    <span>Task analytics</span>
+                </li>
+                <li class="feature-item feature-disabled">
+                    <i class="fas fa-times feature-cross"></i>
+                    <span>Weekly planner</span>
+                </li>
+            </ul>
+            
+            <div class="current-plan-badge">
+                <i class="fas fa-user-circle"></i>
+                Your current plan
+            </div>
+        </div>
+        
+        <!-- Premium Plan -->
+        <div class="pricing-card premium-card">
+            <div class="recommended-badge">
+                <i class="fas fa-star"></i>
+                RECOMMENDED
+            </div>
+            
+            <div class="pricing-card-header">
+                <h3 class="pricing-title">Premium</h3>
+                <div class="pricing-price">$4.99</div>
+                <div class="pricing-period">per month</div>
+            </div>
+            
+            <ul class="pricing-features">
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Unlimited tasks</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Advanced priority engine</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Detailed analytics & insights</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Edit & delete tasks</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Smart weekly planner</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Priority support</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Export to PDF/Excel</span>
+                </li>
+                <li class="feature-item">
+                    <i class="fas fa-check feature-check"></i>
+                    <span>Mobile app access</span>
+                </li>
+            </ul>
+            
+            <form method="POST" class="upgrade-form">
+                <button type="submit" class="upgrade-button">
+                    <i class="fas fa-crown"></i>
+                    Upgrade to Premium
+                </button>
+                <p class="upgrade-note">30-day money back guarantee</p>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Comparison Table -->
+    <div class="comparison-section">
+        <h2>Feature Comparison</h2>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Free</th>
+                    <th>Premium</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Task Limit</td>
+                    <td>5 tasks</td>
+                    <td>Unlimited</td>
+                </tr>
+                <tr>
+                    <td>Priority Engine</td>
+                    <td>Basic</td>
+                    <td>Advanced AI-based</td>
+                </tr>
+                <tr>
+                    <td>Task Editing</td>
+                    <td><i class="fas fa-times text-danger"></i></td>
+                    <td><i class="fas fa-check text-success"></i></td>
+                </tr>
+                <tr>
+                    <td>Weekly Planner</td>
+                    <td><i class="fas fa-times text-danger"></i></td>
+                    <td><i class="fas fa-check text-success"></i></td>
+                </tr>
+                <tr>
+                    <td>Stress Analytics</td>
+                    <td>Basic indicator</td>
+                    <td>Detailed reports</td>
+                </tr>
+                <tr>
+                    <td>Export Options</td>
+                    <td><i class="fas fa-times text-danger"></i></td>
+                    <td>PDF, Excel, CSV</td>
+                </tr>
+                <tr>
+                    <td>Support</td>
+                    <td>Community</td>
+                    <td>Priority 24/7</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- FAQ Section -->
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3 class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    Can I cancel anytime?
+                </h3>
+                <p class="faq-answer">Yes, you can cancel your Premium subscription at any time from your account settings. No questions asked.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    Will I lose my data if I downgrade?
+                </h3>
+                <p class="faq-answer">No, your data is completely safe. However, you'll only be able to view/edit up to 5 tasks in the Free version.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    Is there a free trial?
+                </h3>
+                <p class="faq-answer">Yes! All Premium features are available during a 7-day free trial. No credit card required to start.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    Can I switch between plans?
+                </h3>
+                <p class="faq-answer">Absolutely. You can upgrade or downgrade at any time. Changes take effect immediately.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    What payment methods do you accept?
+                </h3>
+                <p class="faq-answer">We accept all major credit cards, PayPal, and bank transfers for annual plans.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3 class="faq-question">
+                    <i class="fas fa-question-circle"></i>
+                    Is my payment information secure?
+                </h3>
+                <p class="faq-answer">Yes, we use SSL encryption and never store your credit card information on our servers.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Final CTA -->
+    <div class="final-cta">
+        <h2>Ready to Boost Your Productivity?</h2>
+        <p>Join thousands of students who use Scholar Scheduler Premium to manage their academic workload efficiently.</p>
+        <form method="POST">
+            <button type="submit" class="cta-button">
+                <i class="fas fa-rocket"></i>
+                Start Your Premium Journey
+            </button>
+        </form>
+        <p class="cta-note">No risk, 30-day money back guarantee</p>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='upgrade.js') }}"></script>
 {% endblock %}
