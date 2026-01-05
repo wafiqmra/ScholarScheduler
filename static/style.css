@@ -31,6 +31,7 @@ th, td { padding:10px; text-align:left; }
     font-weight: bold;
 }
 
+
 .upgrade-table {
     width: 100%;
     border-collapse: collapse;
@@ -43,3 +44,75 @@ th, td { padding:10px; text-align:left; }
 }
 .upgrade-table th { background:#4CAF50; color:white; }
 .upgrade-table tr:nth-child(even) { background:#f2f2f2; }
+
+.collision-warning {
+    background: #ffcc00;
+    color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.day-box {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.green { color: green; font-weight: bold; }
+.red { color: red; font-weight: bold; }
+
+.course-box {
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.course-box h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+.task-item {
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    background: #e3f2fd;
+}
+
+.stress-box {
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.stress-box.green {
+    background: #d4edda;
+    color: #155724;
+}
+
+.stress-box.orange {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.stress-box.red {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.stress-level {
+    font-size: 32px;
+    margin: 10px 0;
+}

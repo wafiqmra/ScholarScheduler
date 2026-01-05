@@ -1,0 +1,29 @@
+<h2>📅 Weekly Reality Planner</h2>
+
+<p>Total Kapasitas: {{ weekly_capacity }} jam</p>
+<p>Total Beban Tugas: {{ total_task_hours }} jam</p>
+
+{% if remaining >= 0 %}
+<p class="green">🟢 Sisa waktu: {{ remaining }} jam</p>
+{% else %}
+<p class="red">🔴 Overload {{ remaining|abs }} jam</p>
+{% endif %}
+
+<hr>
+
+<div class="week-grid">
+{% for day, tasks in planner.items() %}
+  <div class="day-box">
+    <h4>Hari {{ day + 1 }}</h4>
+    {% if tasks %}
+      <ul>
+        {% for t in tasks %}
+          <li>{{ t }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>⏳ Kosong</p>
+    {% endif %}
+  </div>
+{% endfor %}
+</div>

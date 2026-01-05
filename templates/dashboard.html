@@ -7,6 +7,18 @@
 <a href="{{ url_for('upgrade') }}">Upgrade Now</a>
 {% endif %}
 
+{% if warning_msg %}
+<div class="collision-warning">{{ warning_msg }}</div>
+{% endif %}
+
+<div class="stress-box {{ stress_color }}">
+    <h3>Weekly Stress Level</h3>
+    <p class="stress-level">
+        {{ stress_level }}
+    </p>
+    <small>Based on your tasks this week</small>
+</div>
+
 <h3>Add Task</h3>
 {% if not is_premium and tasks|length >=5 %}
 <p style="color:red;">Free user maksimal 5 task. Upgrade untuk menambah lebih banyak task.</p>
@@ -26,24 +38,40 @@
 </form>
 {% endif %}
 
-<h3>Your Tasks:</h3>
-<table>
-<tr><th>Title</th><th>Deadline</th><th>SKS</th><th>Jenis</th><th>Est. Time</th><th>Priority</th><th>Action</th></tr>
-{% for task in tasks %}
-<tr data-task-id="{{ task['id'] }}">
-    <td>{{ task['title'] }}</td>
-    <td>{{ task['deadline'] }}</td>
-    <td>{{ task['sks'] }}</td>
-    <td>{{ task['jenis'] }}</td>
-    <td>{{ task['estimasi_waktu'] }}</td>
-    <td>{{ task['priority'] }}</td>
-    <td>
-        {% if is_premium %}
-        <button class="delete-task">🗑️</button>
-        <button class="edit-task">✏️</button>
-        {% endif %}
-    </td>
-</tr>
+<h3>Your Tasks by Course</h3>
+
+{% for course, tasks in grouped_tasks.items() %}
+<div class="course-box">
+    <h4>📘 {{ course }}</h4>
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Deadline</th>
+            <th>Priority</th>
+            <th>Progress</th>
+            <th>Action</th>
+        </tr>
+
+        {% for task in tasks %}
+        <tr data-task-id="{{ task.id }}">
+            <td>{{ task.title }}</td>
+            <td>{{ task.deadline }}</td>
+            <td>{{ task.priority }}</td>
+            <td>
+                {{ task.progress if task.progress else "0%" }}
+            </td>
+            <td>
+                {% if is_premium %}
+                <button class="delete-task">🗑️</button>
+                <button class="edit-task">✏️</button>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endfor %}
+
 </table>
 {% endblock %}
