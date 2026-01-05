@@ -98,13 +98,20 @@
                 </li>
             </ul>
             
-            <form method="POST" class="upgrade-form">
-                <button type="submit" class="upgrade-button">
+            <!-- PERBAIKAN: Gunakan link biasa, bukan form -->
+            <div class="upgrade-actions">
+                <a href="{{ url_for('payment') }}" class="upgrade-button-link">
                     <i class="fas fa-crown"></i>
-                    Upgrade to Premium
-                </button>
+                    Upgrade to Premium ($4.99/month)
+                </a>
+                
+                <a href="{{ url_for('direct_upgrade') }}" class="test-upgrade-link" onclick="return confirm('Upgrade to Premium without payment? (For testing only)')">
+                    <i class="fas fa-bolt"></i>
+                    Test Upgrade (Free - No Payment)
+                </a>
+                
                 <p class="upgrade-note">30-day money back guarantee</p>
-            </form>
+            </div>
         </div>
     </div>
     
@@ -218,15 +225,124 @@
     <div class="final-cta">
         <h2>Ready to Boost Your Productivity?</h2>
         <p>Join thousands of students who use Scholar Scheduler Premium to manage their academic workload efficiently.</p>
-        <form method="POST">
-            <button type="submit" class="cta-button">
-                <i class="fas fa-rocket"></i>
-                Start Your Premium Journey
-            </button>
-        </form>
+        
+        <a href="{{ url_for('payment') }}" class="cta-button-link">
+            <i class="fas fa-rocket"></i>
+            Start Your Premium Journey
+        </a>
         <p class="cta-note">No risk, 30-day money back guarantee</p>
     </div>
 </div>
 
-<script src="{{ url_for('static', filename='upgrade.js') }}"></script>
+<style>
+/* Additional styles for buttons */
+.upgrade-actions {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.upgrade-button-link {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    background: white;
+    color: #3b82f6;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.upgrade-button-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+}
+
+.test-upgrade-link {
+    display: block;
+    width: 100%;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.test-upgrade-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.cta-button-link {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    background: linear-gradient(135deg, #3b82f6, #14b8a6);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.cta-button-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+}
+
+.upgrade-note {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.cta-note {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--notion-text-light);
+}
+</style>
+
+<script>
+// Simple button animation
+document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('.upgrade-button-link, .test-upgrade-link, .cta-button-link');
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Add loading animation
+            const originalText = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            this.style.pointerEvents = 'none';
+            
+            // Reset after 3 seconds if still on same page
+            setTimeout(() => {
+                if (this.innerHTML.includes('spinner')) {
+                    this.innerHTML = originalText;
+                    this.style.pointerEvents = 'auto';
+                }
+            }, 3000);
+        });
+    });
+});
+</script>
 {% endblock %}

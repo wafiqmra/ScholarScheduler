@@ -4,6 +4,7 @@ from functools import wraps
 from datetime import datetime, timedelta
 from collections import defaultdict
 import random
+import time  # Tambahkan ini
 
 app = Flask(__name__)
 app.secret_key = "kwusecret123"
@@ -314,22 +315,123 @@ def delete_course(course_id):
     
     return jsonify({'success': True})
 
-# ================= Upgrade =================
-@app.route('/upgrade', methods=['GET','POST'])
+# ================= Upgrade & Payment =================
+@app.route('/upgrade')
 @login_required
 def upgrade():
-    if request.method == 'POST':
+    # Check if already premium
+    if session.get('is_premium'):
+        flash("You are already a Premium member!", 'info')
+        return redirect(url_for('dashboard'))
+    return render_template('upgrade.html')
+
+@app.route('/direct_upgrade', methods=['GET', 'POST'])
+@login_required
+def direct_upgrade():
+    """Direct upgrade without payment page (for testing)"""
+    if request.method == 'GET':
+        # Jika diakses via GET, redirect ke upgrade page
+        return redirect(url_for('upgrade'))
+    
+    # Jika POST, lakukan upgrade
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE users SET is_premium=1 WHERE id=%s", (session['user_id'],))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    session['is_premium'] = 1
+    flash("🎉 Account upgraded to Premium successfully!", 'success')
+    return redirect(url_for('dashboard'))
+
+@app.route('/payment')
+@login_required
+def payment():
+    # Check if already premium
+    if session.get('is_premium'):
+        flash("You are already a Premium member!", 'info')
+        return redirect(url_for('dashboard'))
+    return render_template('payment.html')
+
+@app.route('/process_payment', methods=['POST'])
+@login_required
+def process_payment():
+    # Simulate payment processing
+    payment_method = request.form.get('method', 'card')
+    
+    # Import regex di sini
+    import re
+    
+    # Dummy validation for card payment
+    if payment_method == 'card':
+        # Get form data
+        card_number = request.form.get('card_number', '').replace(' ', '')
+        expiry = request.form.get('expiry', '')
+        cvv = request.form.get('cvv', '')
+        card_name = request.form.get('card_name', '').strip()
+        
+        # Debug info
+        print(f"Payment attempt - Card: {card_number}, Expiry: {expiry}, CVV: {cvv}, Name: {card_name}")
+        
+        # Validasi card number
+        if not card_number or len(card_number) != 16 or not card_number.isdigit():
+            flash("❌ Invalid card number. Please enter a valid 16-digit card number.", 'danger')
+            return redirect(url_for('payment'))
+        
+        # Validasi expiry date (format MM/YY)
+        expiry_pattern = r'^(0[1-9]|1[0-2])/([0-9]{2})$'
+        expiry_match = re.match(expiry_pattern, expiry)
+        
+        if not expiry_match:
+            flash("❌ Invalid expiry date. Please use format MM/YY (e.g., 12/25).", 'danger')
+            return redirect(url_for('payment'))
+        
+        # Extract month and year
+        month = int(expiry_match.group(1))
+        year = int(expiry_match.group(2))
+        
+        # Validasi bulan (01-12)
+        if month < 1 or month > 12:
+            flash("❌ Invalid month in expiry date. Month must be between 01 and 12.", 'danger')
+            return redirect(url_for('payment'))
+        
+        # Validasi CVV
+        if not cvv or not cvv.isdigit() or len(cvv) < 3 or len(cvv) > 4:
+            flash("❌ Invalid CVV. Please enter 3-4 digit security code.", 'danger')
+            return redirect(url_for('payment'))
+        
+        # Validasi cardholder name
+        if not card_name or len(card_name) < 2:
+            flash("❌ Please enter cardholder name.", 'danger')
+            return redirect(url_for('payment'))
+    
+    # Simulate processing delay
+    time.sleep(2)  # 2 second delay for realism
+    
+    # Simulate random success/failure (80% success rate)
+    if random.random() < 0.8:
+        # Update user to premium
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("UPDATE users SET is_premium=1 WHERE id=%s", (session['user_id'],))
         conn.commit()
         cursor.close()
         conn.close()
+        
         session['is_premium'] = 1
-        flash("Payment successful! You are now Premium.",'success')
+        
+        # Log payment success
+        print(f"Payment SUCCESS for user_id: {session['user_id']}")
+        
+        flash("🎉 Payment successful! Your account has been upgraded to Premium.", 'success')
         return redirect(url_for('dashboard'))
-    return render_template('upgrade.html')
-
+    else:
+        # Log payment failure
+        print(f"Payment FAILED for user_id: {session['user_id']}")
+        
+        flash("❌ Payment failed. Please try again or use a different payment method.", 'danger')
+        return redirect(url_for('payment'))
+    
 # ================= Task Management =================
 @app.route('/delete_task/<int:task_id>', methods=['POST'])
 @login_required
@@ -340,7 +442,7 @@ def delete_task(task_id):
     conn.commit()
     cursor.close()
     conn.close()
-    return "Deleted"
+    return jsonify({'success': True})
 
 @app.route('/edit_task/<int:task_id>', methods=['POST'])
 @login_required
@@ -353,7 +455,7 @@ def edit_task(task_id):
     conn.commit()
     cursor.close()
     conn.close()
-    return "Updated"
+    return jsonify({'success': True})
 
 # ================= Weekly Planner =================
 @app.route('/weekly-planner')

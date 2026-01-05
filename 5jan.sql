@@ -23,60 +23,76 @@ USE `scholar`;
 CREATE TABLE IF NOT EXISTS `courses` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
-  `course_name` varchar(100) DEFAULT NULL,
-  `sks` int DEFAULT NULL,
+  `course_name` varchar(100) NOT NULL,
+  `sks` int DEFAULT '2',
+  `color` varchar(20) DEFAULT '#3b82f6',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
-  CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table scholar.courses: ~0 rows (approximately)
+-- Dumping data for table scholar.courses: ~8 rows (approximately)
+INSERT INTO `courses` (`id`, `user_id`, `course_name`, `sks`, `color`, `created_at`) VALUES
+	(1, 1, 'Mathematics', 3, '#3b82f6', '2026-01-05 11:34:49'),
+	(2, 1, 'Physics', 3, '#ef4444', '2026-01-05 11:34:49'),
+	(3, 1, 'Computer Science', 4, '#10b981', '2026-01-05 11:34:49'),
+	(4, 1, 'English', 2, '#8b5cf6', '2026-01-05 11:34:49'),
+	(5, 2, 'Calculus', 3, '#f59e0b', '2026-01-05 11:34:49'),
+	(6, 2, 'Statistics', 2, '#ec4899', '2026-01-05 11:34:49'),
+	(7, 3, 'Programming', 4, '#8b5cf6', '2026-01-05 11:34:49'),
+	(8, 3, 'Database', 3, '#10b981', '2026-01-05 11:34:49');
 
 -- Dumping structure for table scholar.tasks
 CREATE TABLE IF NOT EXISTS `tasks` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
-  `course_name` varchar(100) DEFAULT NULL,
-  `title` varchar(255) DEFAULT NULL,
+  `title` varchar(255) NOT NULL,
   `deadline` date DEFAULT NULL,
-  `sks` int DEFAULT NULL,
-  `jenis` varchar(50) DEFAULT NULL,
-  `estimasi_waktu` int DEFAULT NULL,
-  `priority` varchar(20) DEFAULT NULL,
+  `sks` int DEFAULT '2',
+  `jenis` varchar(50) DEFAULT 'tugas',
+  `estimasi_waktu` int DEFAULT '2',
+  `priority` varchar(20) DEFAULT 0xF09F9FA22053616E746169,
   `progress` int DEFAULT '0',
   `course_id` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `course_id` (`course_id`),
-  CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `tasks_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `tasks_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table scholar.tasks: ~5 rows (approximately)
-INSERT INTO `tasks` (`id`, `user_id`, `course_name`, `title`, `deadline`, `sks`, `jenis`, `estimasi_waktu`, `priority`, `progress`, `course_id`) VALUES
-	(1, 1, NULL, 'start', '2025-12-22', 2, 'uts', 7, '🔴 Mendesak', 0, NULL),
-	(2, 1, NULL, 'test', '2025-12-31', 2, 'proyek', 3, '🟢 Santai', 0, NULL),
-	(3, 2, NULL, '1', '2025-12-23', 1, 'kuis', 1, '🔴 Mendesak', 0, NULL),
-	(4, 2, NULL, '2', '2025-12-23', 2, 'kuis', 2, '🔴 Mendesak', 0, NULL),
-	(5, 3, NULL, 'Math', '2026-01-05', 2, 'uas', 2, '🔴 Mendesak', 0, NULL);
+-- Dumping data for table scholar.tasks: ~8 rows (approximately)
+INSERT INTO `tasks` (`id`, `user_id`, `title`, `deadline`, `sks`, `jenis`, `estimasi_waktu`, `priority`, `progress`, `course_id`, `created_at`) VALUES
+	(1, 1, 'Linear Algebra Assignment', '2025-12-22', 2, 'tugas', 7, '🔴 Mendesak', 0, 1, '2026-01-05 11:34:49'),
+	(2, 1, 'Quantum Physics Project', '2025-12-31', 3, 'proyek', 3, '🟢 Santai', 0, 2, '2026-01-05 11:34:49'),
+	(3, 1, 'Web Programming Project', '2026-01-10', 4, 'proyek', 5, '🟡 Sedang', 0, 3, '2026-01-05 11:34:49'),
+	(4, 1, 'English Essay', '2026-01-15', 2, 'tugas', 2, '🟢 Santai', 0, 4, '2026-01-05 11:34:49'),
+	(5, 2, 'Derivatives Quiz', '2025-12-23', 1, 'kuis', 1, '🔴 Mendesak', 0, 5, '2026-01-05 11:34:49'),
+	(6, 2, 'Integration Homework', '2025-12-23', 2, 'tugas', 2, '🔴 Mendesak', 0, 5, '2026-01-05 11:34:49'),
+	(7, 3, 'Data Structures Final Exam', '2026-01-05', 2, 'uas', 2, '🔴 Mendesak', 0, 7, '2026-01-05 11:34:49'),
+	(8, 3, 'SQL Database Project', '2026-01-12', 3, 'proyek', 4, '🟡 Sedang', 0, 8, '2026-01-05 11:34:49'),
+	(9, 3, 'English', '2026-01-06', 2, 'kuis', 2, '🔴 Mendesak', 0, 7, '2026-01-05 13:49:58');
 
 -- Dumping structure for table scholar.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `is_premium` tinyint(1) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table scholar.users: ~3 rows (approximately)
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `is_premium`) VALUES
-	(1, 'test', 'test@gmail.com', '111', 1),
-	(2, 'test1', 'test1@gmail.com', '111', 0),
-	(3, 'test2', 'test2@gmail.com', '123', 0);
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `is_premium`, `created_at`) VALUES
+	(1, 'test', 'test@gmail.com', '111', 1, '2026-01-05 11:34:49'),
+	(2, 'test1', 'test1@gmail.com', '111', 0, '2026-01-05 11:34:49'),
+	(3, 'test2', 'test2@gmail.com', '123', 0, '2026-01-05 11:34:49');
 
 -- Dumping structure for table scholar.user_settings
 CREATE TABLE IF NOT EXISTS `user_settings` (
@@ -97,12 +113,16 @@ CREATE TABLE IF NOT EXISTS `weekly_capacity` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
   `daily_hours` int DEFAULT '2',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `weekly_capacity_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table scholar.weekly_capacity: ~1 rows (approximately)
+-- Dumping data for table scholar.weekly_capacity: ~3 rows (approximately)
 INSERT INTO `weekly_capacity` (`id`, `user_id`, `daily_hours`) VALUES
-	(1, 3, 2);
+	(1, 1, 4),
+	(2, 2, 3),
+	(3, 3, 2);
 
 -- Dumping structure for table scholar.weekly_schedule
 CREATE TABLE IF NOT EXISTS `weekly_schedule` (

@@ -23,7 +23,7 @@
                 <a href="{{ url_for('manage_courses') }}"><i class="fas fa-book"></i> Courses</a>
                 <a href="{{ url_for('weekly_planner') }}"><i class="fas fa-calendar-week"></i> Weekly</a>
                 {% if not session.get('is_premium') %}
-                    <a href="{{ url_for('upgrade') }}" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f;">
+                    <a href="{{ url_for('upgrade') }}" style="background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; padding: 0.5rem 1rem; border-radius: 6px; text-decoration: none;">
                         <i class="fas fa-crown"></i> Upgrade
                     </a>
                 {% endif %}

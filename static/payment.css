@@ -1,0 +1,416 @@
+/* payment.css */
+.payment-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.payment-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.payment-header h1 {
+    font-size: 2.5rem;
+    color: var(--notion-primary);
+    margin-bottom: 1rem;
+}
+
+.payment-subtitle {
+    color: var(--notion-text-light);
+    font-size: 1.1rem;
+}
+
+.payment-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+    .payment-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Order Summary */
+.order-summary {
+    background: var(--notion-card);
+    border: 1px solid var(--notion-border);
+    border-radius: 12px;
+    padding: 2rem;
+    height: fit-content;
+}
+
+.order-summary h3 {
+    margin-top: 0;
+    color: var(--notion-text);
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--notion-border);
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--notion-border);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-item span:first-child {
+    color: var(--notion-text-light);
+}
+
+.summary-item span:last-child {
+    font-weight: 500;
+    text-align: right;
+    max-width: 60%;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem 0;
+    margin-top: 1rem;
+    border-top: 2px solid var(--notion-border);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.total-amount {
+    color: var(--notion-primary);
+    font-size: 1.5rem;
+}
+
+/* Payment Form */
+.payment-form {
+    background: var(--notion-card);
+    border: 1px solid var(--notion-border);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.payment-form h3 {
+    margin-top: 0;
+    color: var(--notion-text);
+    margin-bottom: 1.5rem;
+}
+
+/* Payment Methods */
+.payment-methods {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.payment-method {
+    flex: 1;
+    min-width: 120px;
+    background: var(--notion-bg);
+    border: 2px solid var(--notion-border);
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.payment-method input {
+    display: none;
+}
+
+.payment-method.selected {
+    border-color: var(--notion-primary);
+    background: var(--notion-primary-light);
+}
+
+.payment-method:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.payment-method i {
+    font-size: 1.5rem;
+    color: var(--notion-primary);
+}
+
+.payment-method.selected i {
+    color: var(--notion-primary);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--notion-text);
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--notion-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: var(--notion-bg);
+    transition: all 0.2s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--notion-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.card-icons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.card-icons i {
+    font-size: 1.5rem;
+    color: var(--notion-text-light);
+}
+
+.cvv-info {
+    position: absolute;
+    right: 1rem;
+    top: 2.8rem;
+    color: var(--notion-text-light);
+    cursor: help;
+}
+
+/* Demo Info */
+.demo-info {
+    background: var(--notion-orange-light);
+    border: 1px solid var(--notion-orange);
+    color: #92400e;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.demo-info strong {
+    color: #78350f;
+}
+
+.demo-info small {
+    display: block;
+    margin-top: 0.5rem;
+    opacity: 0.8;
+}
+
+/* Alternative Payment Methods */
+.paypal-info, .virtual-info {
+    text-align: center;
+    padding: 2rem;
+    background: var(--notion-bg);
+    border-radius: 8px;
+    border: 1px solid var(--notion-border);
+}
+
+.paypal-info i {
+    color: #003087;
+    margin-bottom: 1rem;
+}
+
+.virtual-bank {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.virtual-bank i {
+    color: var(--notion-primary);
+    font-size: 1.5rem;
+}
+
+.virtual-details {
+    text-align: left;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.virtual-details div {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--notion-border);
+}
+
+.virtual-details div:last-child {
+    border-bottom: none;
+}
+
+/* Payment Footer */
+.payment-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--notion-border);
+}
+
+.security-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--notion-text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.security-info i {
+    color: var(--notion-green);
+}
+
+.payment-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.cancel-btn {
+    padding: 1rem 2rem;
+    background: var(--notion-border);
+    color: var(--notion-text);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.cancel-btn:hover {
+    background: #e5e7eb;
+    transform: translateY(-1px);
+}
+
+.pay-btn {
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, var(--notion-primary), var(--notion-teal));
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.pay-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.pay-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Payment Features */
+.payment-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.feature {
+    text-align: center;
+    padding: 2rem;
+    background: var(--notion-card);
+    border-radius: 12px;
+    border: 1px solid var(--notion-border);
+}
+
+.feature i {
+    font-size: 2rem;
+    color: var(--notion-primary);
+    margin-bottom: 1rem;
+}
+
+.feature h4 {
+    margin-bottom: 0.5rem;
+    color: var(--notion-text);
+}
+
+.feature p {
+    color: var(--notion-text-light);
+    margin: 0;
+}
+
+/* Success/Error Messages */
+.flash {
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    animation: slideIn 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.flash.success {
+    background-color: var(--notion-green-light);
+    border-color: var(--notion-green);
+    color: #065f46;
+}
+
+.flash.danger {
+    background-color: var(--notion-red-light);
+    border-color: var(--notion-red);
+    color: #991b1b;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Loading Animation */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
