@@ -1,5 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Welcome to Scholar Scheduler</h1>
-<p>Manage your tasks efficiently and let our Auto Priority Engine guide you.</p>
+<div style="text-align: center; padding: 4rem 2rem;">
+    <h1>Welcome to Scholar Scheduler</h1>
+    <p style="max-width: 600px; margin: 0 auto 2rem; font-size: 1.2rem;">
+        A Notion-inspired academic planner that helps you manage tasks efficiently with our intelligent Auto Priority Engine.
+    </p>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin: 4rem 0;">
+        <div class="stat-card">
+            <i class="fas fa-tasks" style="font-size: 2.5rem; color: var(--notion-primary); margin-bottom: 1rem;"></i>
+            <h3>Smart Priority</h3>
+            <p>Automatic task prioritization based on deadlines and importance</p>
+        </div>
+        
+        <div class="stat-card">
+            <i class="fas fa-brain" style="font-size: 2.5rem; color: var(--notion-green); margin-bottom: 1rem;"></i>
+            <h3>Stress Detection</h3>
+            <p>Weekly stress level monitoring to prevent burnout</p>
+        </div>
+        
+        <div class="stat-card">
+            <i class="fas fa-calendar-alt" style="font-size: 2.5rem; color: var(--notion-purple); margin-bottom: 1rem;"></i>
+            <h3>Weekly Planning</h3>
+            <p>Automatic task distribution across your week</p>
+        </div>
+    </div>
+    
+    {% if not session.get('user_id') %}
+    <div style="margin-top: 3rem;">
+        <a href="{{ url_for('register') }}" style="display: inline-block; padding: 1rem 2rem; background: linear-gradient(135deg, var(--notion-primary), #4f46e5); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin: 0 1rem;">
+            Get Started Free
+        </a>
+        <a href="{{ url_for('login') }}" style="display: inline-block; padding: 1rem 2rem; background: var(--notion-card); color: var(--notion-text); text-decoration: none; border-radius: 8px; font-weight: 600; border: 1px solid var(--notion-border); margin: 0 1rem;">
+            Login
+        </a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

@@ -1,77 +1,155 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Dashboard {% if is_premium %}<span class="premium-badge">Premium</span>{% else %}(Free){% endif %}</h2>
-
-{% if not is_premium %}
-<p style="color:red;">You are Free user. Upgrade untuk fitur penuh.</p>
-<a href="{{ url_for('upgrade') }}">Upgrade Now</a>
-{% endif %}
-
-{% if warning_msg %}
-<div class="collision-warning">{{ warning_msg }}</div>
-{% endif %}
-
-<div class="stress-box {{ stress_color }}">
-    <h3>Weekly Stress Level</h3>
-    <p class="stress-level">
-        {{ stress_level }}
-    </p>
-    <small>Based on your tasks this week</small>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>
+        Dashboard 
+        {% if is_premium %}
+        <span class="premium-badge">Premium</span>
+        {% else %}
+        <span style="font-size: 1rem; color: var(--notion-text-light); font-weight: 400;">(Free Version)</span>
+        {% endif %}
+    </h2>
+    
+    <div style="display: flex; align-items: center; gap: 1rem;">
+        <div style="font-size: 0.9rem; color: var(--notion-text-light);">
+            <i class="fas fa-user"></i> {{ session['username'] }}
+        </div>
+        {% if not is_premium %}
+        <a href="{{ url_for('upgrade') }}" style="padding: 0.5rem 1rem; background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #78350f; text-decoration: none; border-radius: 6px; font-weight: 500; font-size: 0.9rem;">
+            <i class="fas fa-crown"></i> Upgrade to Premium
+        </a>
+        {% endif %}
+    </div>
 </div>
 
-<h3>Add Task</h3>
+{% if warning_msg %}
+<div class="collision-warning">
+    {{ warning_msg }}
+</div>
+{% endif %}
+
 {% if not is_premium and tasks|length >=5 %}
-<p style="color:red;">Free user maksimal 5 task. Upgrade untuk menambah lebih banyak task.</p>
+<div style="background: var(--notion-orange-light); border: 1px solid var(--notion-orange); color: #92400e; padding: 1rem; border-radius: 8px; margin-bottom: 2rem;">
+    <i class="fas fa-exclamation-triangle"></i> Free users are limited to 5 tasks. <a href="{{ url_for('upgrade') }}" style="color: #78350f; font-weight: 600; text-decoration: underline;">Upgrade</a> to add more tasks.
+</div>
+{% endif %}
+
+<div class="stats-container">
+    <div class="stat-card">
+        <div>Total Tasks</div>
+        <div class="number">{{ tasks|length }}</div>
+        <div style="color: var(--notion-text-light); font-size: 0.9rem;">Across all courses</div>
+    </div>
+    
+    <div class="stress-box {{ stress_color }}" style="grid-column: span 2;">
+        <h3 style="margin-top: 0;">Weekly Stress Level</h3>
+        <div class="stress-level">{{ stress_level }}</div>
+        <div style="color: var(--notion-text-light);">Score: {{ stress_score }}</div>
+        <small>Based on your tasks this week (deadlines, SKS, and task types)</small>
+    </div>
+</div>
+
+<h3><i class="fas fa-plus-circle"></i> Add New Task</h3>
+{% if not is_premium and tasks|length >=5 %}
+<p style="color: var(--notion-text-light); background: var(--notion-card); padding: 1rem; border-radius: 8px; border: 1px solid var(--notion-border);">
+    <i class="fas fa-lock"></i> Task limit reached. Upgrade to Premium for unlimited tasks.
+</p>
 {% else %}
 <form id="task-form">
-    <input type="text" name="title" placeholder="Task title" required>
+    <input type="text" name="title" placeholder="Task title (e.g., 'Math Assignment')" required>
     <input type="date" name="deadline" required>
-    <input type="number" name="sks" placeholder="SKS" required>
+    <input type="number" name="sks" placeholder="SKS" min="1" max="6" required>
     <select name="jenis">
         <option value="kuis">Kuis</option>
         <option value="uts">UTS</option>
         <option value="uas">UAS</option>
         <option value="proyek">Proyek</option>
+        <option value="tugas">Regular Task</option>
     </select>
-    <input type="number" name="estimasi" placeholder="Estimasi waktu (jam)" required>
-    <button type="submit">Add Task</button>
+    <input type="number" name="estimasi" placeholder="Estimated hours" min="1" required>
+    <button type="submit">
+        <i class="fas fa-plus"></i> Add Task
+    </button>
 </form>
 {% endif %}
 
-<h3>Your Tasks by Course</h3>
+<h3><i class="fas fa-book-open"></i> Your Tasks by Course</h3>
 
 {% for course, tasks in grouped_tasks.items() %}
 <div class="course-box">
-    <h4>📘 {{ course }}</h4>
+    <h4>
+        {% if course.startswith('Math') %}📐
+        {% elif course.startswith('Physics') %}⚛️
+        {% elif course.startswith('Computer') %}💻
+        {% elif course.startswith('English') %}📖
+        {% else %}📘{% endif %}
+        {{ course }}
+    </h4>
 
     <table>
-        <tr>
-            <th>Title</th>
-            <th>Deadline</th>
-            <th>Priority</th>
-            <th>Progress</th>
-            <th>Action</th>
-        </tr>
-
-        {% for task in tasks %}
-        <tr data-task-id="{{ task.id }}">
-            <td>{{ task.title }}</td>
-            <td>{{ task.deadline }}</td>
-            <td>{{ task.priority }}</td>
-            <td>
-                {{ task.progress if task.progress else "0%" }}
-            </td>
-            <td>
-                {% if is_premium %}
-                <button class="delete-task">🗑️</button>
-                <button class="edit-task">✏️</button>
-                {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Deadline</th>
+                <th>Priority</th>
+                <th>Type</th>
+                <th>SKS</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr data-task-id="{{ task.id }}">
+                <td style="font-weight: 500;">{{ task.title }}</td>
+                <td>
+                    {% if task.priority == '🔴 Mendesak' %}
+                    <span style="color: var(--notion-red); font-weight: 600;">{{ task.deadline }}</span>
+                    {% elif task.priority == '🟡 Sedang' %}
+                    <span style="color: var(--notion-orange);">{{ task.deadline }}</span>
+                    {% else %}
+                    <span style="color: var(--notion-green);">{{ task.deadline }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if task.priority == '🔴 Mendesak' %}
+                    <span style="background: var(--notion-red-light); color: var(--notion-red); padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.9rem;">
+                        {{ task.priority }}
+                    </span>
+                    {% elif task.priority == '🟡 Sedang' %}
+                    <span style="background: var(--notion-orange-light); color: #92400e; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.9rem;">
+                        {{ task.priority }}
+                    </span>
+                    {% else %}
+                    <span style="background: var(--notion-green-light); color: var(--notion-green); padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.9rem;">
+                        {{ task.priority }}
+                    </span>
+                    {% endif %}
+                </td>
+                <td>{{ task.jenis|title }}</td>
+                <td>{{ task.sks }}</td>
+                <td>
+                    {% if is_premium %}
+                    <button class="edit-task" title="Edit task">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="delete-task" title="Delete task">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    {% else %}
+                    <span style="color: var(--notion-text-light); font-size: 0.9rem;">Premium only</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
+</div>
+{% else %}
+<div style="text-align: center; padding: 3rem; background: var(--notion-card); border-radius: 12px; border: 2px dashed var(--notion-border);">
+    <i class="fas fa-clipboard-list" style="font-size: 3rem; color: var(--notion-border); margin-bottom: 1rem;"></i>
+    <h3 style="color: var(--notion-text-light);">No tasks yet</h3>
+    <p style="color: var(--notion-text-light);">Add your first task using the form above!</p>
 </div>
 {% endfor %}
 
-</table>
 {% endblock %}
